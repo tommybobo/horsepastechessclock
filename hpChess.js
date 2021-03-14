@@ -24,13 +24,13 @@ function addListeners() {
 
 function turnCallback(mutations, observer) {
     for (mutation of mutations) {
+        clearInterval(redTimerInterval);
+        clearInterval(blueTimerInterval);
         switch (mutation.target.nodeValue) {
             case "red's turn":
-            clearInterval(blueTimerInterval);
             redTimerInterval = setInterval(redCountdown, 1000);
             break;
         case "blue's turn":
-            clearInterval(redTimerInterval);
             blueTimerInterval = setInterval(blueCountdown, 1000);
             break;
         case "red wins!":
@@ -38,15 +38,13 @@ function turnCallback(mutations, observer) {
             if(blueTimer.innerHTML == "0:00") {
                 result = document.getElementById("status");
                 result.innerHTML = "red wins by timeout.";
-                clearInterval(blueTimerInterval);
             }
             break;
         case "blue wins!":
             redTimer = document.getElementById("redTimer");
             if(redTimer.innerHTML == "0:00") {
                 result = document.getElementById("status");
-                result.innerHTML = "blue wins by timeout."
-                clearInterval(redTimerInterval);
+                result.innerHTML = "blue wins by timeout.";
             }
             break;
         }            
