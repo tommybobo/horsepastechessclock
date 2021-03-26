@@ -11,15 +11,15 @@ function init() {
 }
 
 function addListeners() {
-    targetEl = document.getElementById("status");
     config = {characterData: true, subtree: true};
-    var statusMO = new MutationObserver(turnCallback);
-    statusMO.observe(targetEl, config);
 
-    targetEl = document.getElementsByClassName("word")[0];
-    config = {characterData: true, subtree: true};
+    statusEl = document.getElementById("status");
+    var statusMO = new MutationObserver(turnCallback);
+    statusMO.observe(statusEl, config);
+
+    cardEl = document.getElementsByClassName("word")[0];
     var cardMO = new MutationObserver(newGame);
-    cardMO.observe(targetEl, config);
+    cardMO.observe(cardEl, config);
 }
 
 function turnCallback(mutations, observer) {
@@ -27,7 +27,7 @@ function turnCallback(mutations, observer) {
         clearInterval(redTimerInterval);
         clearInterval(blueTimerInterval);
         switch (mutation.target.nodeValue) {
-            case "red's turn":
+        case "red's turn":
             redTimerInterval = setInterval(redCountdown, 1000);
             break;
         case "blue's turn":
@@ -68,7 +68,7 @@ function blueCountdown(){
     timeLeft = blueTimer.innerHTML.split(":").map(parseFloat);
     timeLeft[1] -= 1;
     simplifyTime(timeLeft);
-    blueTimer.innerHTML = timeLeft[0] + ":" + (timeLeft[1] < 10 ? "0" : "") + timeLeft[1];;
+    blueTimer.innerHTML = timeLeft[0] + ":" + (timeLeft[1] < 10 ? "0" : "") + timeLeft[1];
     if (blueTimer.innerHTML == "0:00") {
         deadword = document.getElementsByClassName("black")[0];
         deadword.click();
@@ -92,11 +92,10 @@ function simplifyTime(timeArray) {
         }
     }
     timeArray[0] += Math.floor(timeArray[1] / 60);
-    timeArray[1] %= 60;
-    
+    timeArray[1] %= 60;   
 }
 
-function newGame() {
+async function newGame() {
     clearInterval(redTimerInterval);
     clearInterval(blueTimerInterval);
     addTimers();
@@ -106,7 +105,6 @@ function newGame() {
     } else{
         blueTimerInterval = setInterval(blueCountdown, 1000);
     }
-
 }
 
 function addTimers() {
@@ -135,14 +133,12 @@ function addTimers() {
         
         statusLine.insertBefore(redTimer, statusLine.children[1]);
         statusLine.insertBefore(blueTimer, statusLine.children[statusLine.children.length - 1]);
-        redCountdown();
     } else {
         blueStart[0] += parseInt(menu.bonusMin.value);
         blueStart[1] += parseInt(menu.bonusSec.value);
         
         statusLine.insertBefore(blueTimer, statusLine.children[1]);
         statusLine.insertBefore(redTimer, statusLine.children[statusLine.children.length - 1]);
-        blueCountdown();
     }
 
     simplifyTime(redStart);
@@ -156,7 +152,7 @@ function addMenu() {
     menu = document.createElement("form");    
 
     label = document.createElement("label");
-    label.innerHTML = "time per turn: ";
+    label.innerHTML = "time per team: ";
     label.classList.add("grayText", "menuItem");
 
     turnMin = document.createElement("select");
