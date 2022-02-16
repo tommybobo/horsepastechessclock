@@ -157,7 +157,7 @@ function addMenu() {
 
     turnMin = document.createElement("select");
     turnMin.setAttribute("name", "turnMin");
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 25; i++) {
         opt = document.createElement("option");
         opt.setAttribute("value", i);
         if (i == 3) {
